@@ -1,0 +1,54 @@
+    * {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+        text-align: center;
+        justify-content: center;
+        background: rgb(240, 240, 240) !important;
+    }
+    
+    .titulo {
+        margin: 10px;
+        padding: 3px;
+        background: rgb(240, 240, 240) !important;
+    }
+    
+    .menu span {
+        color: red;
+        margin: 25px;
+    }
+    
+    .menu-itens span {
+        color: black;
+        margin: 20px;
+    }
+    
+    .btn-add {
+        margin: 30px;
+        border: 1.5px solid black;
+        background-color: transparent;
+        border-radius: 5px;
+    }
+    
+    .add-item {
+        width: 100%;
+    }
+    
+    #qtd_produto,
+    #valor_produto {
+        width: 100px;
+    }
+    
+    #nom_produto {
+        width: 300px;
+        text-align: left;
+        justify-content: left;
+    }
+    
+    .add-item input,
+    .add-item button {
+        background: #fff !important;
+    }
