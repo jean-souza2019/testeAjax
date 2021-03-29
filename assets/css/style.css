@@ -64,3 +64,15 @@
         background-color: #fff !important;
         margin: 2px;
     }
+    
+    .enviar {
+        margin-top: 50px;
+    }
+    
+    .btnEnviar {
+        background-color: darkgrey !important;
+        box-shadow: 0px 0px 6px -2px black;
+        padding: 3px;
+        font-size: 20px;
+        border-radius: 15px;
+    }

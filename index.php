@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-var_dump($_SESSION['id']);
+// var_dump($_SESSION['id']);
 ?>
 
 <!DOCTYPE html>
@@ -35,13 +35,14 @@ var_dump($_SESSION['id']);
 
 
     <div class="menu">
-
-        <span>ID</span>
+        <?php if (!isset($_GET['add'])) { ?>
+            <span>ID</span>
+        <?php } ?>
         <span>Qtd</span>
         <span>Produto</span>
         <span>Valor Un.</span>
         <?php if (!isset($_GET['add'])) { ?>
-            <span>Config</span>
+            <span>Opções</span>
         <?php } ?>
     </div>
 
@@ -52,11 +53,9 @@ var_dump($_SESSION['id']);
             foreach ($_SESSION['carrinho'] as $item) {
                 // var_dump($item);
         ?>
-                <!-- <span><?= $item['id'] ?></span>
-                <span><?= $item['qtdItem'] ?></span>
-                <span><?= $item['nomeItem'] ?></span>
-                <span><?= $item['valorItem'] ?></span> -->
-                <input type="number" class="imp" name="qtdItem" value="<?= $item['id'] ?>" readonly="true">
+                <?php if (!isset($_GET['add'])) { ?>
+                    <input type="number" class="imp" name="qtdItem" value="<?= $item['id'] ?>" readonly="true">
+                <?php } ?>
                 <input type="number" class="imp" name="nomeItem" value="<?= $item['qtdItem'] ?>" readonly="true">
                 <input type="text" class="imp" name="valorItem" value="<?= $item['nomeItem'] ?>" readonly="true">
                 <input type="number" class="imp" name="valorItem" value="<?= $item['valorItem'] ?>" readonly="true">
@@ -65,7 +64,7 @@ var_dump($_SESSION['id']);
 
                     <span>
                         <a class="btn btn-outline-danger btn-sm" href="removeItem?id=<?= $item['id'] ?>" role="button"><i class="far fa-trash-alt">del</i></a>
-                        <a class="btn btn-outline-danger btn-sm" href="?edit=<?= $item['id'] ?>" role="button"><i class="far fa-trash-alt">edit</i></a>
+                        <!-- <a class="btn btn-outline-danger btn-sm" href="?edit=<?= $item['id'] ?>" role="button"><i class="far fa-trash-alt">edit</i></a> -->
                     </span>
                 <?php } ?>
 
@@ -94,10 +93,18 @@ var_dump($_SESSION['id']);
 
         <div class="components">
             <span class="btn-add"> <a href="?add=item"> Adicionar</a></span>
+            <span class="btn-add"> <a href="limparItens"> limpar</a></span>
         </div>
     <?php } ?>
 
 
+    <?php
+    if (!isset($_GET['add'])) {
+    ?>
+        <div class="enviar">
+            <button class="btnEnviar">Gerar Cupom</button>
+        </div>
+    <?php } ?>
 </body>
 
 
