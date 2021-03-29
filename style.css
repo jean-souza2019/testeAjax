@@ -1,0 +1,19 @@
+* {
+    left: 0;
+    margin: 1px;
+    text-align: center;
+    justify-content: center;
+}
+
+button {
+    margin: 20px;
+    padding: 8px;
+}
+
+form {
+    padding: 20px;
+}
+
+input {
+    text-align: left;
+}
