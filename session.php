@@ -1,17 +1,18 @@
 <?php
-// if ($_POST) {
-//     var_dump($_POST);
-
-//     // $_SESSION['carrinho']['produtos'][44]['quantidade'] = $_POST['campo1'];
-//     // $_SESSION['carrinho']['produtos'][44]['nome'] = $_POST['campo2'];
-//     // $_SESSION['carrinho']['produtos'][44]['preco_unit'] = $_POST['campo3'];
-// }
+session_start();
 
 
-
-if (isset($_POST) && !empty($_POST)) {
-    echo '<pre>';
-    print_r($_POST);
-    echo '</pre>';
+if (isset($_SESSION['id'])) {
+    $x = $_SESSION['id'];
+    $x = $x + 1;
+    $_SESSION['id'] = $x;
+} else {
+    $_SESSION['id'] = 1;
 }
-?>
+
+if (!empty($_POST['qtdItem']) && !empty($_POST['nomeItem']) && !empty($_POST['valorItem'])) {
+    $_SESSION['carrinho'][$_SESSION['id']]['id'] = $_SESSION['id'];
+    $_SESSION['carrinho'][$_SESSION['id']]['qtdItem'] = $_POST['qtdItem'];
+    $_SESSION['carrinho'][$_SESSION['id']]['nomeItem'] = $_POST['nomeItem'];
+    $_SESSION['carrinho'][$_SESSION['id']]['valorItem'] = $_POST['valorItem'];
+}

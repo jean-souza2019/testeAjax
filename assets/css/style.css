@@ -18,7 +18,7 @@
     
     .menu span {
         color: red;
-        margin: 25px;
+        margin: 63px;
     }
     
     .menu-itens span {
@@ -34,6 +34,7 @@
     }
     
     .add-item {
+        margin-top: 20px;
         width: 100%;
     }
     
@@ -51,4 +52,15 @@
     .add-item input,
     .add-item button {
         background: #fff !important;
+    }
+    
+    .delete {
+        color: red !important;
+        padding: 2px;
+        border: 1px solid black;
+    }
+    
+    .imp {
+        background-color: #fff !important;
+        margin: 2px;
     }

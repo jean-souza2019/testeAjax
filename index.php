@@ -1,5 +1,7 @@
 <?php
 session_start();
+
+var_dump($_SESSION['id']);
 ?>
 
 <!DOCTYPE html>
@@ -20,6 +22,10 @@ session_start();
 </head>
 
 <body>
+
+    <div class="recebeDados">
+    </div>
+
     <div>
         <h1 class="titulo">
             Carrinho de Compras
@@ -29,21 +35,40 @@ session_start();
 
 
     <div class="menu">
+
+        <span>ID</span>
         <span>Qtd</span>
         <span>Produto</span>
         <span>Valor Un.</span>
-        <span>Config</span>
+        <?php if (!isset($_GET['add'])) { ?>
+            <span>Config</span>
+        <?php } ?>
     </div>
 
     <div class="menu-itens">
         <?php
-        if ($_SESSION) {
-            foreach ($_SESSION['carrinho']['produtos'] as $produto) {
+        if (isset($_SESSION['carrinho'])) {
+
+            foreach ($_SESSION['carrinho'] as $item) {
+                // var_dump($item);
         ?>
-                <span><?= $produto['quantidade'] ?></span>
-                <span><?= $produto['nome'] ?></span>
-                <span><?= $produto['preco_unit'] ?></span>
-                <span><button>Edit</button></span>
+                <!-- <span><?= $item['id'] ?></span>
+                <span><?= $item['qtdItem'] ?></span>
+                <span><?= $item['nomeItem'] ?></span>
+                <span><?= $item['valorItem'] ?></span> -->
+                <input type="number" class="imp" name="qtdItem" value="<?= $item['id'] ?>" readonly="true">
+                <input type="number" class="imp" name="nomeItem" value="<?= $item['qtdItem'] ?>" readonly="true">
+                <input type="text" class="imp" name="valorItem" value="<?= $item['nomeItem'] ?>" readonly="true">
+                <input type="number" class="imp" name="valorItem" value="<?= $item['valorItem'] ?>" readonly="true">
+                <?php
+                if (!isset($_GET['add']) && !isset($_GET['edit'])) { ?>
+
+                    <span>
+                        <a class="btn btn-outline-danger btn-sm" href="removeItem?id=<?= $item['id'] ?>" role="button"><i class="far fa-trash-alt">del</i></a>
+                        <a class="btn btn-outline-danger btn-sm" href="?edit=<?= $item['id'] ?>" role="button"><i class="far fa-trash-alt">edit</i></a>
+                    </span>
+                <?php } ?>
+
                 <br>
         <?php
             }
@@ -55,12 +80,14 @@ session_start();
     if (isset($_GET['add'])) {
     ?>
         <div class="add-item">
-            <input type="number" name="qtd_produto" placeholder="Qtd" id="qtd_produto">
-            <input type="text" name="nom_produto" placeholder="Produto" id="nom_produto">
-            <input type="number" name="valor_produto" placeholder="R$" id="valor_produto">
+            <form class="form" method="post" action="">
+                <input type="number" class="imp" name="qtdItem" placeholder="Qtd" id="qtdItem">
+                <input type="text" class="imp" name="nomeItem" placeholder="Produto" id="nomeItem">
+                <input type="number" class="imp" name="valorItem" placeholder="R$" id="valorItem">
 
-            <!-- <span class="btn-add"> <a href="/Carrinho" id="addss"> add</a></span> -->
-            <span class="btn-add"> <a id="addss"> add</a></span>
+                <!-- <span class="btn-add"> <a href="/Carrinho" id="addss"> add</a></span> -->
+                <button type="submit"> add</button>
+            </form>
         </div>
     <?php
     } else { ?>
@@ -75,35 +102,23 @@ session_start();
 
 
 <script>
-    $("#addss").click(function() {
-        var qtd_produto = document.getElementById("qtd_produto").value;
-        var nom_produto = document.getElementById("nom_produto").value;
-        var valor_produto = document.getElementById("valor_produto").value;
-
-
-
-        // $(".menu").append("<div>teste</div>");
-
-
-
-        $.ajax({
-                method: "POST",
-                url: "session.php",
-                data: {
-                    qtd_produto: qtd_produto,
-                    nom_produto: nom_produto,
-                    valor_produto: valor_produto
-                },
-                beforeSend: function() {
-                    $("#resultado").html("ENVIANDO...");
+    $(function() {
+        $('.form').submit(function() {
+            $.ajax({
+                url: 'session.php',
+                type: 'POST',
+                data: $('.form').serialize(),
+                success: function(data) {
+                    // $('.recebeDados').html(data);
+                    window.location.href = "/Carrinho";
                 }
-            })
-            .done(function(msg) {
-                $("#resultado").html(msg);
-            })
-            .fail(function(jqXHR, textStatus, msg) {
-                alert(msg);
             });
+            return false;
+        });
+
+
+
+
     });
 </script>
 
