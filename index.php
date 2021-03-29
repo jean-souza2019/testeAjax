@@ -25,6 +25,7 @@ session_start();
                 <td>Quantidade</td>
                 <td>Produto</td>
                 <td>Valor</td>
+                <td>Opções</td>
             </tr>
             <?php
 
@@ -88,5 +89,11 @@ session_start();
             });
             return false;
         })
-    })
+    });
+
+
+
+    function DeletarItem() {
+        window.location.reload();
+    }
 </script>
