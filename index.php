@@ -1,6 +1,15 @@
 <?php
 session_start();
+require('querys.php');
 // var_dump($_SESSION['carrinho']);
+
+
+$query = new querys();
+
+
+$produtos = $query->getProdutos();
+
+
 ?>
 <a href="./compras_efetuadas">Compras efetuadas</a>
 
@@ -22,17 +31,16 @@ session_start();
 </head>
 
 <body>
-<?php
-require('querys.php');
-$produtos = $querys->getProdutos();
-?>
-    div class="recebeDados">
+    <div class="recebeDados">
     </div>
 
     <div>
         <h1 class="titulo">
             Carrinho de Compras
         </h1>
+
+        <h5>Cliente: <input type="text" class="imp" name="cli" id="cli" value="" ></h5>
+        <h5>OS: <input type="number" class="imp" name="os" id="os" value="" ></h5> 
     </div>
 
 
@@ -103,7 +111,12 @@ $produtos = $querys->getProdutos();
         <div class="add-item">
             <form class="form" method="post" action="">
                 <input type="number" class="imp" name="qtdItem" placeholder="Qtd" id="qtdItem">
-                <input type="text" class="imp" name="nomeItem" placeholder="Produto" id="nomeItem">
+                <!-- <input type="text" class="imp" name="nomeItem" placeholder="Produto" id="nomeItem"> -->
+                <select class="imp" id="nomeItem" name="nomeItem" >
+                      <?php foreach ($produtos as $produto) { ?>
+                        <option value="<?= $produto['DESCRICAO'] ?>"><?= $produto['DESCRICAO'] ?></option>
+                      <?php   } ?>
+                    </select>
                 <input type="number" class="imp" name="valorItem" placeholder="R$" id="valorItem">
 
                 <button type="submit"> add</button>
