@@ -2,6 +2,7 @@
 session_start();
 // var_dump($_SESSION['carrinho']);
 ?>
+<a href="./compras_efetuadas">Compras efetuadas</a>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -21,8 +22,11 @@ session_start();
 </head>
 
 <body>
-
-    <div class="recebeDados">
+<?php
+require('querys.php');
+$produtos = $querys->getProdutos();
+?>
+    div class="recebeDados">
     </div>
 
     <div>
@@ -117,10 +121,10 @@ session_start();
 
 
     <?php
-    if (!isset($_GET['add'])) {
+    if (!isset($_GET['add']) && isset($_SESSION['carrinho'])) {
     ?>
         <div class="enviar">
-            <button class="btnEnviar">Finalizar</button>
+            <a class="btnEnviar" href="GravaBd"> Finalizar</a>
         </div>
     <?php } ?>
 </body>
