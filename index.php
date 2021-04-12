@@ -1,7 +1,6 @@
 <?php
 session_start();
-
-// var_dump($_SESSION['id']);
+// var_dump($_SESSION['carrinho']);
 ?>
 
 <!DOCTYPE html>
@@ -73,6 +72,25 @@ session_start();
             }
         }
         ?>
+        <br>
+        <span>Total: </span>
+        <span>
+            <?php
+            if (isset($_SESSION['carrinho'])) {
+                $total = 0;
+                foreach ($_SESSION['carrinho'] as $item) {
+                    //    $total = $total + ($item['qtdItem']*$item['valorItem']);
+                    // echo "</br>";
+                    $it = $item['valorItem'] * $item['qtdItem'];
+                    // echo $it;
+                    // echo "</br>";
+
+                    $total = $total + $it;
+                }
+                echo $total;
+            } ?>
+
+        </span>
     </div>
 
     <?php
@@ -84,9 +102,9 @@ session_start();
                 <input type="text" class="imp" name="nomeItem" placeholder="Produto" id="nomeItem">
                 <input type="number" class="imp" name="valorItem" placeholder="R$" id="valorItem">
 
-                <!-- <span class="btn-add"> <a href="/Carrinho" id="addss"> add</a></span> -->
                 <button type="submit"> add</button>
             </form>
+            <button><a href="/Carrinho"> Cancelar</a></button>
         </div>
     <?php
     } else { ?>
@@ -102,7 +120,7 @@ session_start();
     if (!isset($_GET['add'])) {
     ?>
         <div class="enviar">
-            <button class="btnEnviar">Gerar Cupom</button>
+            <button class="btnEnviar">Finalizar</button>
         </div>
     <?php } ?>
 </body>
