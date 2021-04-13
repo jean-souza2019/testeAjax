@@ -22,39 +22,46 @@ session_start();
 
 <body>
 
-    <div class="recebeDados">
-    </div>
-
     <div>
         <h1 class="titulo">
             Compras Efetuadas
         </h1>
     </div>
 
+    <div>
+        <div>
+            <h1>
+                titulo
+            </h1>
+        </div>
+        <div>
+            teste
+        </div>
+    </div>
 
 
-  
 
-<script>
-    $(function() {
-        $('.form').submit(function() {
-            $.ajax({
-                url: 'session.php',
-                type: 'POST',
-                data: $('.form').serialize(),
-                success: function(data) {
-                    // $('.recebeDados').html(data);
-                    window.location.href = "/Carrinho";
-                }
+
+    <script>
+        $(function() {
+            $('.form').submit(function() {
+                $.ajax({
+                    url: 'session.php',
+                    type: 'POST',
+                    data: $('.form').serialize(),
+                    success: function(data) {
+                        // $('.recebeDados').html(data);
+                        window.location.href = "/Carrinho";
+                    }
+                });
+                return false;
             });
-            return false;
+
+
+
+
         });
-
-
-
-
-    });
-</script>
+    </script>
 
 </html>
 

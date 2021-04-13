@@ -1,7 +1,10 @@
 <?php
 session_start();
 require('querys.php');
-// var_dump($_SESSION['carrinho']);
+if (isset($_SESSION['mensagem'])) {
+
+    var_dump($_SESSION['mensagem']);
+}
 
 
 $query = new querys();
@@ -39,16 +42,16 @@ $produtos = $query->getProdutos();
             Carrinho de Compras
         </h1>
 
-        <h5>Cliente: <input type="text" class="imp" name="cli" id="cli" value="" ></h5>
-        <h5>OS: <input type="number" class="imp" name="os" id="os" value="" ></h5> 
+        <h5>Cliente: <input type="text" class="imp" name="cli" onchange="addCli(1)" id="cli" value="<?= !empty($_SESSION['cliente']) ? $_SESSION['cliente'] : '' ?>"></h5>
+        <h5>OS: <input type="number" class="imp" name="os" onchange="addCli(2)" id="os" value="<?= !empty($_SESSION['os']) ? $_SESSION['os'] : '' ?>"></h5>
     </div>
 
 
 
     <div class="menu">
-        <?php if (!isset($_GET['add'])) { ?>
-            <span>ID</span>
-        <?php } ?>
+        <!-- <?php if (!isset($_GET['add'])) { ?> -->
+            <!-- <span>ID</span> -->
+        <!-- <?php } ?> -->
         <span>Qtd</span>
         <span>Produto</span>
         <span>Valor Un.</span>
@@ -64,9 +67,9 @@ $produtos = $query->getProdutos();
             foreach ($_SESSION['carrinho'] as $item) {
                 // var_dump($item);
         ?>
-                <?php if (!isset($_GET['add'])) { ?>
-                    <input type="number" class="imp" name="qtdItem" value="<?= $item['id'] ?>" readonly="true">
-                <?php } ?>
+                <!-- <?php if (!isset($_GET['add'])) { ?> -->
+                    <!-- <input type="number" class="imp" name="qtdItem" value="<?= $item['id'] ?>" readonly="true"> -->
+                <!-- <?php } ?> -->
                 <input type="number" class="imp" name="nomeItem" value="<?= $item['qtdItem'] ?>" readonly="true">
                 <input type="text" class="imp" name="valorItem" value="<?= $item['nomeItem'] ?>" readonly="true">
                 <input type="number" class="imp" name="valorItem" value="<?= $item['valorItem'] ?>" readonly="true">
@@ -112,11 +115,11 @@ $produtos = $query->getProdutos();
             <form class="form" method="post" action="">
                 <input type="number" class="imp" name="qtdItem" placeholder="Qtd" id="qtdItem">
                 <!-- <input type="text" class="imp" name="nomeItem" placeholder="Produto" id="nomeItem"> -->
-                <select class="imp" id="nomeItem" name="nomeItem" >
-                      <?php foreach ($produtos as $produto) { ?>
+                <select class="imp" id="nomeItem" name="nomeItem">
+                    <?php foreach ($produtos as $produto) { ?>
                         <option value="<?= $produto['DESCRICAO'] ?>"><?= $produto['DESCRICAO'] ?></option>
-                      <?php   } ?>
-                    </select>
+                    <?php   } ?>
+                </select>
                 <input type="number" class="imp" name="valorItem" placeholder="R$" id="valorItem">
 
                 <button type="submit"> add</button>
@@ -137,7 +140,9 @@ $produtos = $query->getProdutos();
     if (!isset($_GET['add']) && isset($_SESSION['carrinho'])) {
     ?>
         <div class="enviar">
-            <a class="btnEnviar" href="GravaBd"> Finalizar</a>
+            <!-- <a class="btnEnviar" onclick=""> Finalizar</a> -->
+            <button><a class="btnEnviar" href="/carrinho/model_ins_carrinho"> Finalizar</a></button>
+
         </div>
     <?php } ?>
 </body>
@@ -162,6 +167,39 @@ $produtos = $query->getProdutos();
 
 
     });
+
+
+
+    function addCli(x) {
+        if (x === 1) {
+            x = document.getElementById('cli').value;
+            // console.log(x);
+
+            $.ajax({
+                url: 'addCliOs.php',
+                type: 'POST',
+                data: {
+                    cliente: $('#cli').val()
+                },
+                success: function(data) {
+                    window.location.href = "/Carrinho";
+                }
+            });
+        }
+        if (x === 2) {
+            x = document.getElementById('os').value;
+            $.ajax({
+                url: 'addCliOs.php',
+                type: 'POST',
+                data: {
+                    os: $('#os').val()
+                },
+                success: function(data) {
+                    window.location.href = "/Carrinho";
+                }
+            });
+        }
+    }
 </script>
 
 </html>
