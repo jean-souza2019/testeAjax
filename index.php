@@ -1,17 +1,13 @@
 <?php
 session_start();
 require('querys.php');
-if (isset($_SESSION['mensagem'])) {
+if (isset($_SESSION['carrinho'])) {
 
-    var_dump($_SESSION['mensagem']);
+    // var_dump($_SESSION['carrinho']);
 }
 
-
 $query = new querys();
-
-
 $produtos = $query->getProdutos();
-
 
 ?>
 <a href="./compras_efetuadas">Compras efetuadas</a>
@@ -23,7 +19,8 @@ $produtos = $query->getProdutos();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <!-- Importando Stilos -->
+    <link rel="stylesheet" href="./assets/js/fontawesome-free-5.7.1/css/all.min.css">
     <link rel="stylesheet" href="./assets/js/bootstrap-4.2.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="./assets/js/Datatables/datatables.min.css">
     <link rel="stylesheet" href="./assets/css/select2/select2.min.css">
@@ -49,9 +46,6 @@ $produtos = $query->getProdutos();
 
 
     <div class="menu">
-        <!-- <?php if (!isset($_GET['add'])) { ?> -->
-            <!-- <span>ID</span> -->
-        <!-- <?php } ?> -->
         <span>Qtd</span>
         <span>Produto</span>
         <span>Valor Un.</span>
@@ -64,21 +58,14 @@ $produtos = $query->getProdutos();
         <?php
         if (isset($_SESSION['carrinho'])) {
 
-            foreach ($_SESSION['carrinho'] as $item) {
-                // var_dump($item);
-        ?>
-                <!-- <?php if (!isset($_GET['add'])) { ?> -->
-                    <!-- <input type="number" class="imp" name="qtdItem" value="<?= $item['id'] ?>" readonly="true"> -->
-                <!-- <?php } ?> -->
+            foreach ($_SESSION['carrinho'] as $item) { ?>
                 <input type="number" class="imp" name="nomeItem" value="<?= $item['qtdItem'] ?>" readonly="true">
                 <input type="text" class="imp" name="valorItem" value="<?= $item['nomeItem'] ?>" readonly="true">
                 <input type="number" class="imp" name="valorItem" value="<?= $item['valorItem'] ?>" readonly="true">
                 <?php
                 if (!isset($_GET['add']) && !isset($_GET['edit'])) { ?>
-
                     <span>
-                        <a class="btn btn-outline-danger btn-sm" href="removeItem?id=<?= $item['id'] ?>" role="button"><i class="far fa-trash-alt">del</i></a>
-                        <!-- <a class="btn btn-outline-danger btn-sm" href="?edit=<?= $item['id'] ?>" role="button"><i class="far fa-trash-alt">edit</i></a> -->
+                        <a class="btn btn-outline-danger btn-sm" href="removeItem?id=<?= $item['id'] ?>" role="button"><i class="fa fa-trash"></i></a>
                     </span>
                 <?php } ?>
 
@@ -94,12 +81,7 @@ $produtos = $query->getProdutos();
             if (isset($_SESSION['carrinho'])) {
                 $total = 0;
                 foreach ($_SESSION['carrinho'] as $item) {
-                    //    $total = $total + ($item['qtdItem']*$item['valorItem']);
-                    // echo "</br>";
                     $it = $item['valorItem'] * $item['qtdItem'];
-                    // echo $it;
-                    // echo "</br>";
-
                     $total = $total + $it;
                 }
                 echo $total;
@@ -108,40 +90,24 @@ $produtos = $query->getProdutos();
         </span>
     </div>
 
+
+
+    <div class="components">
+        <br>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">Adicionar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="limpar()">limpar</button>
+
+    </div>
     <?php
-    if (isset($_GET['add'])) {
+    require_once("./teste.php");
     ?>
-        <div class="add-item">
-            <form class="form" method="post" action="">
-                <input type="number" class="imp" name="qtdItem" placeholder="Qtd" id="qtdItem">
-                <!-- <input type="text" class="imp" name="nomeItem" placeholder="Produto" id="nomeItem"> -->
-                <select class="imp" id="nomeItem" name="nomeItem">
-                    <?php foreach ($produtos as $produto) { ?>
-                        <option value="<?= $produto['DESCRICAO'] ?>"><?= $produto['DESCRICAO'] ?></option>
-                    <?php   } ?>
-                </select>
-                <input type="number" class="imp" name="valorItem" placeholder="R$" id="valorItem">
-
-                <button type="submit"> add</button>
-            </form>
-            <button><a href="/Carrinho"> Cancelar</a></button>
-        </div>
-    <?php
-    } else { ?>
-
-        <div class="components">
-            <span class="btn-add"> <a href="?add=item"> Adicionar</a></span>
-            <span class="btn-add"> <a href="limparItens"> limpar</a></span>
-        </div>
-    <?php } ?>
-
 
     <?php
-    if (!isset($_GET['add']) && isset($_SESSION['carrinho'])) {
+    if (isset($_SESSION['carrinho'])) {
     ?>
         <div class="enviar">
-            <!-- <a class="btnEnviar" onclick=""> Finalizar</a> -->
-            <button><a class="btnEnviar" href="/carrinho/model_ins_carrinho"> Finalizar</a></button>
+            <hr>
+            <button type="button" class="btn btn-success" onclick="finalizar()">Finalizar</button>
 
         </div>
     <?php } ?>
@@ -156,7 +122,6 @@ $produtos = $query->getProdutos();
                 type: 'POST',
                 data: $('.form').serialize(),
                 success: function(data) {
-                    // $('.recebeDados').html(data);
                     window.location.href = "/Carrinho";
                 }
             });
@@ -168,13 +133,17 @@ $produtos = $query->getProdutos();
 
     });
 
+    function limpar() {
+        window.location.href = "/carrinho/limparItens";
+    }
 
+    function finalizar() {
+        window.location.href = "/carrinho/model_ins_carrinho";
+    }
 
     function addCli(x) {
         if (x === 1) {
             x = document.getElementById('cli').value;
-            // console.log(x);
-
             $.ajax({
                 url: 'addCliOs.php',
                 type: 'POST',
@@ -201,7 +170,10 @@ $produtos = $query->getProdutos();
         }
     }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
 
 </html>
 
-<!-- https://www.youtube.com/watch?v=wVl_iK4Dmo4 -->
+<!-- Link Youtube onde ajuda sobre tema de Sessões 
+    https://www.youtube.com/watch?v=wVl_iK4Dmo4 -->
